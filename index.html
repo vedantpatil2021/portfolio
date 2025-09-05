@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vedant Patil — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Apercu is commercial; using Poppins as requested -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #0a0a0a;
+      --muted: #5a5a5a;
+      --line: #d9d9d9;
+      --card: #f6f6f6;
+      --link: #0a0a0a; /* monochrome only */
+      --radius: 6px; /* avoid high radius */
+    }
+    [data-theme="dark"]{
+      --bg: #0a0a0a;
+      --fg: #f5f5f5;
+      --muted: #b5b5b5;
+      --line: #2a2a2a;
+      --card: #141414;
+      --link: #f5f5f5;
+    }
+    @media (prefers-color-scheme: dark){
+      html:not([data-theme]){ color-scheme: dark; }
+    }
+    @media (prefers-reduced-motion: no-preference){
+      html{ scroll-behavior: smooth; }
+    }
+    *{ box-sizing: border-box; }
+    html, body{ height:100%; }
+    /* Use root element as snap container for better compatibility */
+    html{
+      scroll-snap-type: y mandatory;
+      /* Offset for fixed header so snaps align below it */
+      scroll-padding-top: 56px;
+    }
+    body{
+      margin:0;
+      font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.5;
+      overflow-y: scroll;
+    }
+    /* Layout */
+    header{
+      position: fixed; inset: 0 0 auto 0; height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 16px; border-bottom:1px solid var(--line); background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: saturate(120%) blur(6px);
+      z-index: 10;
+    }
+    header .brand{ font-weight:600; letter-spacing: .5px; }
+    nav a{
+      color: var(--fg); text-decoration:none; margin-left:16px; font-size: .95rem; opacity:.85;
+    }
+    nav a:hover, nav a.active{ opacity:1; text-decoration: underline; text-underline-offset: 4px; }
+    .theme-toggle{
+      border:1px solid var(--line); background: transparent; color: var(--fg); padding:6px; width:40px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius: var(--radius); cursor:pointer; font: inherit;
+    }
+    /* main inherits snapping from html; no need to set here */
+    main{}
+    section{
+      min-height: 100vh; display:grid; grid-template-columns: minmax(16px,1fr) minmax(0,1120px) minmax(16px,1fr); align-items:center; border-bottom: 1px solid var(--line); scroll-snap-align: start; position: relative;
+    }
+    .wrap{ grid-column: 2; display:grid; gap: 24px; }
+    .grid-2{ display:grid; grid-template-columns: 1.1fr .9fr; gap:24px; align-items:center; }
+    .kicker{ text-transform: uppercase; letter-spacing:.18em; font-size:.78rem; color:var(--muted); }
+    h1{ font-size: clamp(2rem, 4vw, 3rem); margin:0; line-height:1.1; }
+    h2{ font-size: clamp(1.4rem, 3vw, 2rem); margin:0 0 8px; line-height:1.2; }
+    p{ margin:0; color: var(--fg); opacity:.9; }
+    .muted{ color:var(--muted); }
+
+    /* Image Placeholder / Profile image */
+    .ph{
+      border:1px dashed var(--line); aspect-ratio: 4 / 5; width:100%; background: var(--card); display:flex; align-items:center; justify-content:center; font-size:.9rem; color:var(--muted);
+    }
+    .profile-img{
+      width:100%;
+      max-width:360px;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    /* Cards & lists */
+    .list{ display:grid; gap:14px; }
+    .item{ border:1px solid var(--line); padding:14px 16px; border-radius: var(--radius); background: var(--card); }
+    .item h3{ margin:0 0 6px; font-size:1rem; }
+    .meta{ font-size:.9rem; color: var(--muted); }
+    .tags{ display:flex; flex-wrap: wrap; gap:8px; margin-top:8px; }
+    .tag{ border:1px solid var(--line); padding:4px 8px; border-radius: 4px; font-size:.85rem; }
+
+    /* Footer/contact */
+    .links{ display:flex; flex-wrap:wrap; gap:16px; }
+    .links a{ color:var(--link); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:2px; }
+
+    /* Icon styling */
+    .theme-toggle svg{ width:18px; height:18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    .theme-toggle svg circle, .theme-toggle svg line, .theme-toggle svg path{ vector-effect: non-scaling-stroke; }
+
+    /* Small screens */
+    @media (max-width: 880px){ .grid-2{ grid-template-columns: 1fr; } header nav{ display:none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">VP</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#awards">Awards</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme" title="Toggle theme"><span id="themeIcon" aria-hidden="true"></span></button>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" aria-label="Home">
+      <div class="wrap grid-2">
+        <div>
+          <span class="kicker">Cloud • DevOps • Edge</span>
+          <h1>Graduate Research Associate building resilient edge-to-cloud systems.</h1>
+          <p class="muted">I design minimal, reliable infrastructure for AI at the far‑edge—K3s on devices, K8s in the cloud, with clean CI/CD.
+          </p>
+        </div>
+        <div>
+          <!-- Use your own image path/URL; HEIC is not supported by many browsers, convert to JPG/PNG if needed -->
+          <img src="assets/images/IMG_1414.heic" alt="Vedant Patil" class="ph" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT / EDUCATION -->
+    <section id="about" aria-label="About">
+      <div class="wrap">
+        <div>
+          <span class="kicker">About</span>
+          <h2>Based in Columbus, Ohio — MS in CSE @ The Ohio State University</h2>
+          <p class="muted">Previously, BE in Information Technology from University of Mumbai (VIT). Focused on distributed systems, edge AI, and practical DevOps.
+          </p>
+        </div>
+        <div class="list">
+          <div class="item">
+            <h3>MS, Computer Science & Engineering</h3>
+            <div class="meta">The Ohio State University · Aug 2024 – present · Columbus, OH</div>
+          </div>
+          <div class="item">
+            <h3>BE, Information Technology</h3>
+            <div class="meta">University of Mumbai (VIT) · Aug 2020 – Jun 2024 · Mumbai, India</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" aria-label="Skills">
+      <div class="wrap">
+        <span class="kicker">Skills</span>
+        <h2>Tooling I use with intent.</h2>
+        <div class="tags">
+          <span class="tag">AWS</span>
+          <span class="tag">Azure</span>
+          <span class="tag">Jetstream2</span>
+          <span class="tag">Kubernetes (K8s/K3s)</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Helm</span>
+          <span class="tag">Prometheus</span>
+          <span class="tag">Grafana</span>
+          <span class="tag">Power BI</span>
+          <span class="tag">Ansible</span>
+          <span class="tag">Terraform</span>
+          <span class="tag">Puppet</span>
+          <span class="tag">CI/CD</span>
+          <span class="tag">Python</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">C++</span>
+          <span class="tag">Bash</span>
+          <span class="tag">React</span>
+          <span class="tag">Django</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">REST APIs</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">Elasticsearch</span>
+          <span class="tag">Firebase</span>
+          <span class="tag">Git & GitHub Actions</span>
+          <span class="tag">Linux Admin</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" aria-label="Experience">
+      <div class="wrap">
+        <span class="kicker">Experience</span>
+        <div class="list">
+          <div class="item">
+            <h3>Graduate Research Associate — OSU</h3>
+            <div class="meta">Jan 2025 – Present · Columbus, OH · Advisor: Dr. Christopher Stewart</div>
+            <p>Leading integration of AI apps to resource‑constrained edge devices; designing edge‑to‑cloud microservices (K3s ↔ K8s) for optimized data flow; enabling drone‑based agriculture/animal‑ecology missions on Apache Bitnami containers.</p>
+          </div>
+          <div class="item">
+            <h3>Clouds & DevOps Intern — Healiom</h3>
+            <div class="meta">Apr 2024 – Jul 2024 · Remote (San Mateo, CA)</div>
+            <p>Managed AWS infra, registries, networking, IAM; implemented multi‑stage Dockerization (−25% image size); authored Caddy configs and GitHub Actions for CI/CD (−20% deploy time).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" aria-label="Projects">
+      <div class="wrap">
+        <span class="kicker">Projects</span>
+        <div class="list">
+          <div class="item">
+            <h3>Grievance Redressal System — Smart India Hackathon</h3>
+            <div class="meta">Aug 2022 – Aug 2023 · IIT (ISM) Dhanbad</div>
+            <p>React, Node.js, MongoDB, Python ML. Built an IT‑enabled portal for the Ministry of Labor & Employment; workflow automation and DB tuning cut resolution times by ~40%; real‑time dashboards for administrators.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AWARDS -->
+    <section id="awards" aria-label="Awards">
+      <div class="wrap">
+        <span class="kicker">Awards & Certifications</span>
+        <div class="list">
+          <div class="item">
+            <h3>Alpha Level — Microsoft Student Ambassador</h3>
+            <div class="meta">Dec 2023 – Dec 2024</div>
+          </div>
+          <div class="item">
+            <h3>Postman API Fundamentals — Student Expert</h3>
+          </div>
+          <div class="item">
+            <h3>Smart India Hackathon 2022 — Finalist</h3>
+          </div>
+          <div class="item">
+            <h3>IJFMR — Published Research Paper</h3>
+            <div class="meta">“Course Evaluation and Improvement: Enhancing Higher Education Through Sentiment Analysis in Course Rating Systems”.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" aria-label="Contact">
+      <div class="wrap">
+        <span class="kicker">Contact</span>
+        <h2>Let’s build reliable systems.</h2>
+        <div class="links">
+          <a href="mailto:patil.343@osu.edu">Email</a>
+          <a href="https://linkedin.com/in/vedant-patil-6082" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+          <a href="https://github.com/vedantpatil2021" target="_blank" rel="noreferrer noopener">GitHub</a>
+          <a href="#home">Back to top ↑</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Unified theme + nav logic with monochrome SVG icons
+    const root = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const icon = document.getElementById('themeIcon');
+    const KEY = 'vedant-theme';
+
+    // Monochrome SVGs (follow currentColor)
+    const sunIcon = () => `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <line x1="12" y1="1" x2="12" y2="4"/>
+      <line x1="12" y1="20" x2="12" y2="23"/>
+      <line x1="1" y1="12" x2="4" y2="12"/>
+      <line x1="20" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+      <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+      <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
+      <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+    </svg>`;
+    const moonIcon = () => `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>`;
+
+    function setIconFor(theme){ icon.innerHTML = theme === 'dark' ? sunIcon() : moonIcon(); }
+
+    // Default to dark if no preference is saved
+    let saved = localStorage.getItem(KEY);
+    if(saved){ root.setAttribute('data-theme', saved); }
+    else{ root.setAttribute('data-theme', 'dark'); }
+    setIconFor(root.getAttribute('data-theme'));
+
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem(KEY, next);
+      setIconFor(next);
+    });
+
+    // Active nav link on scroll
+    const links = Array.from(document.querySelectorAll('header nav a'));
+    const sections = links.map(a => document.querySelector(a.getAttribute('href')));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = '#' + entry.target.id;
+        const link = links.find(a => a.getAttribute('href') === id);
+        if(link){ link.classList.toggle('active', entry.isIntersecting && entry.intersectionRatio > 0.6); }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px', threshold: [0.6] });
+    sections.forEach(sec => sec && io.observe(sec));
+  </script>
+</body>
+</html>
