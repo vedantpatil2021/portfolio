@@ -62,8 +62,6 @@
     .theme-toggle{
       border:1px solid var(--line); background: transparent; color: var(--fg); padding:6px; width:40px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius: var(--radius); cursor:pointer; font: inherit;
     }
-    /* main inherits snapping from html; no need to set here */
-    main{}
     section{
       min-height: 100vh; display:grid; grid-template-columns: minmax(16px,1fr) minmax(0,1120px) minmax(16px,1fr); align-items:center; border-bottom: 1px solid var(--line); scroll-snap-align: start; position: relative;
     }
@@ -77,7 +75,7 @@
 
     /* Image Placeholder / Profile image */
     .ph{
-      border:1px dashed var(--line); aspect-ratio: 4 / 5; width:100%; background: var(--card); display:flex; align-items:center; justify-content:center; font-size:.9rem; color:var(--muted);
+      border:1px dashed var(--line); aspect-ratio: 4 / 5; width:100%; max-width: 360px; background: var(--card); display:flex; align-items:center; justify-content:center; font-size:.9rem; color:var(--muted); margin: 0 auto;
     }
     .profile-img{
       width:100%;
@@ -86,15 +84,26 @@
       object-fit: cover;
       border:1px solid var(--line);
       border-radius: var(--radius);
+      margin: 0 auto;
+      display: block;
     }
 
     /* Cards & lists */
-    .list{ display:grid; gap:14px; }
-    .item{ border:1px solid var(--line); padding:14px 16px; border-radius: var(--radius); background: var(--card); }
-    .item h3{ margin:0 0 6px; font-size:1rem; }
-    .meta{ font-size:.9rem; color: var(--muted); }
-    .tags{ display:flex; flex-wrap: wrap; gap:8px; margin-top:8px; }
-    .tag{ border:1px solid var(--line); padding:4px 8px; border-radius: 4px; font-size:.85rem; }
+    .list{ display:grid; gap:16px; }
+    .item{ border:1px solid var(--line); padding:20px 24px; border-radius: var(--radius); background: var(--card); transition: all 0.2s ease; }
+    .item:hover{ transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .item h3{ margin:0 0 8px; font-size:1.1rem; font-weight: 600; }
+    .meta{ font-size:.9rem; color: var(--muted); margin-bottom: 8px; }
+    .skill-category{ margin-bottom: 32px; }
+    .skill-category h3{ font-size: 1rem; margin: 0 0 16px; color: var(--fg); font-weight: 500; opacity: 0.9; }
+    .tags{ display:flex; flex-wrap: wrap; gap:10px; margin-top:12px; }
+    .tag{ border:1px solid var(--line); padding:8px 14px; border-radius: 8px; font-size:.85rem; background: var(--bg); transition: all 0.2s ease; font-weight: 500; }
+    .tag:hover{ background: var(--card); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .achievements{ margin: 16px 0 0; padding-left: 20px; color: var(--fg); opacity: 0.9; }
+    .achievements li{ margin-bottom: 8px; line-height: 1.5; }
+    .project-links{ margin-top: 20px; }
+    .project-link{ color: var(--link); text-decoration: none; font-weight: 500; font-size: 0.9rem; opacity: 0.8; transition: opacity 0.2s ease; }
+    .project-link:hover{ text-decoration: underline; opacity: 1; }
 
     /* Footer/contact */
     .links{ display:flex; flex-wrap:wrap; gap:16px; }
@@ -104,8 +113,30 @@
     .theme-toggle svg{ width:18px; height:18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
     .theme-toggle svg circle, .theme-toggle svg line, .theme-toggle svg path{ vector-effect: non-scaling-stroke; }
 
-    /* Small screens */
-    @media (max-width: 880px){ .grid-2{ grid-template-columns: 1fr; } header nav{ display:none; } }
+    /* Responsive breakpoints */
+    @media (max-width: 1120px){
+      section{ grid-template-columns: minmax(24px,1fr) minmax(0,960px) minmax(24px,1fr); }
+    }
+    @media (max-width: 880px){
+      .grid-2{ grid-template-columns: 1fr; gap: 32px; text-align: center; }
+      .grid-2 > div:last-child{ order: -1; }
+      header nav{ display:none; }
+      .ph, .profile-img{ max-width: 280px; }
+    }
+    @media (max-width: 640px){
+      section{ grid-template-columns: minmax(16px,1fr) minmax(0,100%) minmax(16px,1fr); }
+      .wrap{ gap: 20px; }
+      h1{ font-size: clamp(1.8rem, 6vw, 2.4rem); }
+      h2{ font-size: clamp(1.2rem, 5vw, 1.6rem); }
+      .ph, .profile-img{ max-width: 240px; }
+      header{ padding: 0 12px; }
+    }
+    @media (max-width: 480px){
+      .ph, .profile-img{ max-width: 200px; aspect-ratio: 1/1; }
+      .tags{ gap: 6px; }
+      .tag{ font-size: 0.8rem; padding: 3px 6px; }
+      .links{ gap: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -135,7 +166,7 @@
         </div>
         <div>
           <!-- Use your own image path/URL; HEIC is not supported by many browsers, convert to JPG/PNG if needed -->
-          <img src="assets/images/IMG_1414.heic" alt="Vedant Patil" class="ph" />
+          <img src="assets/images/IMG_1414.png" alt="Vedant Patil" class="ph profile-img" />
         </div>
       </div>
     </section>
@@ -166,35 +197,84 @@
     <section id="skills" aria-label="Skills">
       <div class="wrap">
         <span class="kicker">Skills</span>
-        <h2>Tooling I use with intent.</h2>
-        <div class="tags">
-          <span class="tag">AWS</span>
-          <span class="tag">Azure</span>
-          <span class="tag">Jetstream2</span>
-          <span class="tag">Kubernetes (K8s/K3s)</span>
-          <span class="tag">Docker</span>
-          <span class="tag">Helm</span>
-          <span class="tag">Prometheus</span>
-          <span class="tag">Grafana</span>
-          <span class="tag">Power BI</span>
-          <span class="tag">Ansible</span>
-          <span class="tag">Terraform</span>
-          <span class="tag">Puppet</span>
-          <span class="tag">CI/CD</span>
-          <span class="tag">Python</span>
-          <span class="tag">JavaScript</span>
-          <span class="tag">C++</span>
-          <span class="tag">Bash</span>
-          <span class="tag">React</span>
-          <span class="tag">Django</span>
-          <span class="tag">Node.js</span>
-          <span class="tag">REST APIs</span>
-          <span class="tag">MySQL</span>
-          <span class="tag">MongoDB</span>
-          <span class="tag">Elasticsearch</span>
-          <span class="tag">Firebase</span>
-          <span class="tag">Git & GitHub Actions</span>
-          <span class="tag">Linux Admin</span>
+        <h2>Technology stack for scalable systems.</h2>
+        <div class="skill-category">
+          <h3>Cloud Platforms</h3>
+          <div class="tags">
+            <span class="tag">AWS</span>
+            <span class="tag">Microsoft Azure</span>
+            <span class="tag">Jetstream2</span>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Container Orchestration</h3>
+          <div class="tags">
+            <span class="tag">Kubernetes (K8s, K3s)</span>
+            <span class="tag">Docker</span>
+            <span class="tag">Podman</span>
+            <span class="tag">Helm</span>
+            <span class="tag">Container Registry</span>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>DevOps & Automation</h3>
+          <div class="tags">
+            <span class="tag">Ansible</span>
+            <span class="tag">Terraform</span>
+            <span class="tag">Puppet</span>
+            <span class="tag">Jenkins</span>
+            <span class="tag">CI/CD Pipelines</span>
+            <span class="tag">IaaC</span>
+            <span class="tag">GitHub Actions</span>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Programming Languages</h3>
+          <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">C++</span>
+            <span class="tag">Bash</span>
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3</span>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Frameworks & Libraries</h3>
+          <div class="tags">
+            <span class="tag">React</span>
+            <span class="tag">Django</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">React Native</span>
+            <span class="tag">REST APIs</span>
+            <span class="tag">OpenCV</span>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Databases</h3>
+          <div class="tags">
+            <span class="tag">MySQL</span>
+            <span class="tag">MongoDB</span>
+            <span class="tag">Elasticsearch</span>
+            <span class="tag">Firebase</span>
+            <span class="tag">NoSQL</span>
+          </div>
+        </div>
+        
+        <div class="skill-category">
+          <h3>Monitoring & Analytics</h3>
+          <div class="tags">
+            <span class="tag">Prometheus</span>
+            <span class="tag">Grafana</span>
+            <span class="tag">Power BI</span>
+            <span class="tag">Loki</span>
+          </div>
         </div>
       </div>
     </section>
@@ -205,14 +285,24 @@
         <span class="kicker">Experience</span>
         <div class="list">
           <div class="item">
-            <h3>Graduate Research Associate — OSU</h3>
-            <div class="meta">Jan 2025 – Present · Columbus, OH · Advisor: Dr. Christopher Stewart</div>
-            <p>Leading integration of AI apps to resource‑constrained edge devices; designing edge‑to‑cloud microservices (K3s ↔ K8s) for optimized data flow; enabling drone‑based agriculture/animal‑ecology missions on Apache Bitnami containers.</p>
+            <h3>Graduate Research Associate</h3>
+            <div class="meta">Jan 2025 – Ongoing · Ohio State University · Research Advisor: Dr. Christopher Stewart</div>
+            <p>Led cross-functional integration team to develop AI-based applications on resource-constrained edge devices. Accelerated edge application startup time by <strong>68x</strong> (12 min → 11 sec) through optimized caching and resource allocation.</p>
+            <ul class="achievements">
+              <li>Architected scalable edge-to-cloud microservice infrastructure using Kubernetes (K3s, K8s)</li>
+              <li>Developed robust task management pipelines achieving <strong>95% autonomous operation</strong> success rate</li>
+              <li>Designed distributed computing frameworks for edge-to-cloud continuum</li>
+            </ul>
           </div>
           <div class="item">
-            <h3>Clouds & DevOps Intern — Healiom</h3>
-            <div class="meta">Apr 2024 – Jul 2024 · Remote (San Mateo, CA)</div>
-            <p>Managed AWS infra, registries, networking, IAM; implemented multi‑stage Dockerization (−25% image size); authored Caddy configs and GitHub Actions for CI/CD (−20% deploy time).</p>
+            <h3>Clouds and DevOps Intern</h3>
+            <div class="meta">Apr 2024 – Jul 2024 · Healiom · San Mateo, CA (Remote)</div>
+            <p>Configured and managed AWS cloud infrastructure including container orchestration, registries, networking, and IAM systems for secure application deployments.</p>
+            <ul class="achievements">
+              <li>Implemented multi-stage Dockerization reducing container image sizes by <strong>25%</strong></li>
+              <li>Developed GitHub Actions workflows decreasing deployment time by <strong>20%</strong></li>
+              <li>Created Caddy server configurations for secure web traffic handling</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -224,9 +314,17 @@
         <span class="kicker">Projects</span>
         <div class="list">
           <div class="item">
-            <h3>Grievance Redressal System — Smart India Hackathon</h3>
-            <div class="meta">Aug 2022 – Aug 2023 · IIT (ISM) Dhanbad</div>
-            <p>React, Node.js, MongoDB, Python ML. Built an IT‑enabled portal for the Ministry of Labor & Employment; workflow automation and DB tuning cut resolution times by ~40%; real‑time dashboards for administrators.</p>
+            <h3>Grievance Redressal System</h3>
+            <div class="meta">Aug 2022 – Aug 2023 · Smart India Hackathon · Ministry of Education, India · IIT-Dhanbad</div>
+            <p>Developed comprehensive IT-enabled grievance portal for the Ministry of Labor and Employment, India, leveraging React.js, Node.js, MongoDB, and Python-based machine learning algorithms.</p>
+            <ul class="achievements">
+              <li>Streamlined workflows through database optimization reducing resolution time by <strong>40%</strong></li>
+              <li>Implemented real-time data processing and automated reporting dashboards</li>
+              <li>Enhanced administrative efficiency with integrated data visualization components</li>
+            </ul>
+            <div class="project-links">
+              <a href="#" class="project-link">View Project →</a>
+            </div>
           </div>
         </div>
       </div>
@@ -238,18 +336,24 @@
         <span class="kicker">Awards & Certifications</span>
         <div class="list">
           <div class="item">
-            <h3>Alpha Level — Microsoft Student Ambassador</h3>
+            <h3>Alpha Level - Microsoft Student Ambassador</h3>
             <div class="meta">Dec 2023 – Dec 2024</div>
+            <p>Achieved Alpha level recognition in the Microsoft Student Ambassador program, demonstrating leadership in technology education and community engagement.</p>
           </div>
           <div class="item">
-            <h3>Postman API Fundamentals — Student Expert</h3>
+            <h3>Postman API Fundamental Student Expert</h3>
+            <div class="meta">Certification</div>
+            <p>Certified in API fundamentals and testing methodologies using Postman platform.</p>
           </div>
           <div class="item">
-            <h3>Smart India Hackathon 2022 — Finalist</h3>
+            <h3>Smart India Hackathon 2022 - Finalist</h3>
+            <div class="meta">National Level Competition</div>
+            <p>Selected as finalist among thousands of participants in India's premier hackathon competition.</p>
           </div>
           <div class="item">
-            <h3>IJFMR — Published Research Paper</h3>
-            <div class="meta">“Course Evaluation and Improvement: Enhancing Higher Education Through Sentiment Analysis in Course Rating Systems”.</div>
+            <h3>Published Research Paper - IJFMR</h3>
+            <div class="meta">International Journal for Multidisciplinary Research</div>
+            <p><em>"Course Evaluation and Improvement: Enhancing Higher Education Through Sentiment Analysis in Course Rating Systems"</em> - Research on improving educational feedback systems using machine learning.</p>
           </div>
         </div>
       </div>
